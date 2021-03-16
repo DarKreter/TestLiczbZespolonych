@@ -21,7 +21,7 @@ BazaTestu_t::BazaTestu_t(std::string sNazwaTestu)
         try
         {
             plik >> temp >> ws;
-            temp.Calculate();
+            cout << temp << " = " << temp.Calculate() << endl;
             pytania.push_back(temp);
         }
         catch (std::logic_error& e)

@@ -9,7 +9,28 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    
+    while (true)
+    {
+        try
+        {
+            Zespolona_t z;
+            cin >> z;
+            cout << z;
+        }
+        catch (std::logic_error& e)
+        {
+            cerr << e.what() << endl;
+            cin.clear();
+            cin.ignore(10000, '\n');
+        }
+        catch (...)
+        {
+            cerr << "xD?" << endl;
+        }
+    }
+
+
+    return 0;
   /*if (argc < 2) 
   {
     cout << endl;
@@ -21,7 +42,7 @@ int main(int argc, char **argv)
 
     try
     {
-        BazaTestu_t   bazaT("trudne");
+        BazaTestu_t   bazaT("xD");
         Statystyka_t  statistics( bazaT.size() );
         Zespolona_t answer, correctAnswer;
         int proba = 0;
