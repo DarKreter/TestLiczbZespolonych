@@ -18,12 +18,14 @@ float Statystyka_t::Calculate()
 
 uint8_t Statystyka_t::operator++(int)
 {
-	correctAnswers++;
+	//Zwiekszamy ilosc poprawnych odpowiedzi oraz ilosc wszystkich odpowiedzi 
+	correctAnswers++;		questionsAmount++;
 	return 0;
 }
 
 uint8_t Statystyka_t::operator--(int)
 {
-	wrongAnswers++;
+	//Zwiekszamy ilosc blednych odpowiedzi oraz ilosc wszystkich odpowiedzi 
+	wrongAnswers++;		questionsAmount++;
 	return 0;
 }

@@ -1,13 +1,33 @@
 #include "WyrazenieZesp.hpp"
 
 
-/*
- * Tu nalezy zdefiniowac funkcje, ktorych zapowiedzi znajduja sie
- * w pliku naglowkowym.
- */
-std::ostream& operator<<(std::ostream& strumien, const WyrazenieZesp_t& z)
+std::ostream& operator<<(std::ostream& strumien, const WyrazenieZesp_t::Operator& z)
 {
-	strumien << z.Arg1() << static_cast<char>(z.Op()) << z.Arg2();
+	//Rzutujemy zeby otrzymac znak zamiast wartosci liczbowej tego znaku
+	strumien << static_cast<char>(z);
+
+	return strumien;
+}
+
+std::istream& operator>>(std::istream& strumien, WyrazenieZesp_t::Operator& z)
+{
+	char x;
+	//Wczytujemy wszystkie biale znaki oraz jednego chara
+	strumien >> std::ws >> x;
+
+	switch (x)
+	{
+	//Jesli jest to ktorys z operatorow narazie nie robimy nic
+	case char(WyrazenieZesp_t::Operator::Dodawanie): case char(WyrazenieZesp_t::Operator::Odejmowanie):
+	case char(WyrazenieZesp_t::Operator::Mnozenie): case char(WyrazenieZesp_t::Operator::Dzielenie):
+			break;
+	default:
+		//Jesli to jakis inny znak rzucamy wyjatek
+		throw std::logic_error("Blednie podane wyrazenie zespolone!");
+	}
+
+	//Rzutujemy wczytanego chara na operator
+	z = static_cast<WyrazenieZesp_t::Operator>(x);
 
 	return strumien;
 }
@@ -16,6 +36,7 @@ Zespolona_t WyrazenieZesp_t::Calculate()
 {
 	Zespolona_t temp;
 
+	//Zaleznie od operatora wykonujemy dana operacje matematyczna
 	switch (op)
 	{
 	case Operator::Dodawanie:
@@ -32,30 +53,21 @@ Zespolona_t WyrazenieZesp_t::Calculate()
 		break;
 	}
 
+	//Zwracamy wynik
 	return temp;
 }
 
-std::istream& operator>>(std::istream& strumien, Operator& z)
+std::ostream& operator<<(std::ostream& strumien, const WyrazenieZesp_t& z)
 {
-	char x;
-	strumien >> std::ws >> x;
-
-	switch (x)
-	{
-	case char(Operator::Dodawanie): case char(Operator::Odejmowanie):
-	case char(Operator::Mnozenie): case char(Operator::Dzielenie):
-			break;
-	default:
-		throw std::logic_error("Blednie podane wyrazenie zespolone!");
-	}
-
-	z = static_cast<Operator>(x);
+	//Wypisujemy kolejno liczbe zespolona operator i druga liczbe zespolona
+	strumien << z.Arg1() << z.Op() << z.Arg2();
 
 	return strumien;
 }
 
 std::istream& operator>>(std::istream& strumien, WyrazenieZesp_t& z)
 {
+	//Zeby wczytac WyrazenieZespolone musimy kolejno wczytac liczbe zespolona, operator i druga liczbe zespolona
 	strumien >> z.arg1;
 	strumien >> z.op;
 	strumien >> z.arg2;
